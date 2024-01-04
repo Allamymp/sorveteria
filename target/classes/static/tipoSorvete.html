@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tipo de Sorvete</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="./js/script.js"></script>
+  </head>
+  <body>
+    <div class="container">
+        <h1>Tipo de Sorvete</h1>
+        <div class="buttonsTipoSorvete">
+          <button onclick="showCreateForm()">Create</button>
+          <button>Update</button>
+          <button>Delete</button>
+          <button>List All</button>
+          <button>Find By Id</button>
+        </div>
+      
+        <!-- Formulário oculto -->
+        <form id="createForm" style="display: none;">
+            <!-- Adicione seus campos de formulário aqui -->
+            <label for="tipo">Tipo:</label>
+            <input type="text" id="tipo" name="tipo">
+            <br>
+            <label for="quantBolas">Quantidade de Bolas:</label>
+            <input type="number" id="quantBolas" name="quantBolas">
+            <br>
+            <label for="peso">Peso:</label>
+            <input type="text" id="peso" name="peso" pattern="[0-9]+(\.[0-9]+)?" title="Digite um valor válido. Exemplo: 123 ou 123.45">
+            <br>
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao">
+            <br>
+            <label for="valor">Valor:</label>
+            <input type="text" id="valor" name="valor" pattern="[0-9]+(\.[0-9]+)?" title="Digite um valor válido. Exemplo: 123 ou 123.45">
+            <br>
+            <button type="button" onclick="submitForm()">Submit</button>
+        </form>
+        
+      </div>
+  </body>
+</html>
