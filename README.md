@@ -89,7 +89,7 @@ O projeto utiliza [PostgresSQL](https://www.postgresql.org/) como banco de dados
 
 ## Diagrama
 
-
+https://github.com/Allamymp/sorveteria/blob/main/diagrama.png
 
 ## Desenvolvedores
 
