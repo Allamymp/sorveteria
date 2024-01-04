@@ -1,4 +1,4 @@
-package org.ifpe.web2.sorveteria.repository;
+package org.ifpe.web2.sorveteria.infra;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,7 +25,7 @@ public class ConnectionManager {
 
         return conn;
     }
-    protected static Connection getNewConnection() throws SQLException {
+    public static Connection getNewConnection() throws SQLException {
         try {
             Class.forName("org.postgresql.Driver");
             return DriverManager.getConnection(URL, USER, PASSWORD);

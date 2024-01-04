@@ -3,6 +3,7 @@ package org.ifpe.web2.sorveteria.controller;
 import org.ifpe.web2.sorveteria.model.entity.Sabor;
 import org.ifpe.web2.sorveteria.model.entity.Sorvete;
 import org.ifpe.web2.sorveteria.model.entity.TipoSorvete;
+import org.ifpe.web2.sorveteria.model.entity.dto.report.ReportRequestDTO;
 import org.ifpe.web2.sorveteria.model.entity.dto.sabor.SaborIDDTO;
 import org.ifpe.web2.sorveteria.model.entity.dto.sorvete.SorveteIDDTO;
 import org.ifpe.web2.sorveteria.model.entity.dto.sorvete.SorveteRequestDTO;
@@ -58,5 +59,9 @@ public class SorveteController {
     @GetMapping("/findById")
     public ResponseEntity<?> findById(@RequestBody@Validated SorveteIDDTO data) throws SQLException {
         return ResponseEntity.ok().body(service.read(data));
+    }
+    @GetMapping("/report")
+    public ResponseEntity<?> report(@RequestBody @Validated ReportRequestDTO data) throws SQLException {
+        return ResponseEntity.ok().body(service.readAllByDate(data.date()));
     }
 }

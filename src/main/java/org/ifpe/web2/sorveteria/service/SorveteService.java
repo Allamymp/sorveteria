@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SorveteService {
@@ -33,6 +35,12 @@ public class SorveteService {
 
     public List<Sorvete> readAll() throws SQLException {
         return this.repository.readAll();
+    }
+    public List<Sorvete> readAllByDate(LocalDate data) throws SQLException {
+        List<Sorvete> sorvetes = repository.readAll();
+        return sorvetes.stream()
+                .filter(sorvete -> sorvete.getDataCompra().equals(data))
+                .collect(Collectors.toList());
     }
 }
 

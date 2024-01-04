@@ -1,5 +1,6 @@
 package org.ifpe.web2.sorveteria.repository;
 
+import org.ifpe.web2.sorveteria.infra.ConnectionManager;
 import org.ifpe.web2.sorveteria.model.entity.TipoSorvete;
 
 import java.sql.*;

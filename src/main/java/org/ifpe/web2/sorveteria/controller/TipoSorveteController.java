@@ -26,7 +26,7 @@ public class TipoSorveteController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody @Validated TipoSorveteUpdateDTO data) throws SQLException {
         service.update(data);
         return ResponseEntity.ok().build();
