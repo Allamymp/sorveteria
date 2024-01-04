@@ -72,15 +72,23 @@ public class SaborRepository implements Repository<Sabor> {
     @Override
     public void delete(int codigo) throws SQLException {
         String sql = "DELETE FROM tb_sabor WHERE id = ?";
+        String deleteSaborSql = "DELETE FROM tb_sorvete_sabor WHERE sorvete_id = ?";
 
-        try (Connection conn = ConnectionManager.getNewConnection();
-             PreparedStatement statement = conn.prepareStatement(sql)) {
 
-            statement.setInt(1, codigo);
-            int rowsDeleted = statement.executeUpdate();
+        try (Connection conn = ConnectionManager.getNewConnection()) {
+            // Excluir registros da tabela de relacionamento
+            try (PreparedStatement deleteSaborStatement = conn.prepareStatement(deleteSaborSql)) {
+                deleteSaborStatement.setInt(1, codigo);
+                deleteSaborStatement.executeUpdate();
+            }
+            try (PreparedStatement statement = conn.prepareStatement(sql)) {
 
-            if (rowsDeleted == 0) {
-                throw new SQLException("Nenhum registro excluído. ID não encontrado: " + codigo);
+                statement.setInt(1, codigo);
+                int rowsDeleted = statement.executeUpdate();
+
+                if (rowsDeleted == 0) {
+                    throw new SQLException("Nenhum registro excluído. ID não encontrado: " + codigo);
+                }
             }
         }
     }

@@ -21,4 +21,6 @@ public class Sabor implements Serializable {
         this.nome = nome;
         this.descricao = descricao;
     }
+
+
 }

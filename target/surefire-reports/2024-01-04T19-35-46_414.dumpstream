@@ -1,4 +1,4 @@
-# Created at 2024-01-04T16:32:05.285
+# Created at 2024-01-04T19:35:46.728
 Boot Manifest-JAR contains absolute paths in classpath 'D:\projects\sorveteria\target\test-classes'
 Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
 'other' has different root

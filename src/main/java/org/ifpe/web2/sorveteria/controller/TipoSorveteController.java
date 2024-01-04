@@ -43,7 +43,7 @@ public class TipoSorveteController {
         return ResponseEntity.ok().body(service.readAll());
     }
 
-    @GetMapping("/findById")
+    @PostMapping("/findById")
     public ResponseEntity<?> findById(@RequestBody @Validated TipoSorveteIDDTO data) throws SQLException {
         return ResponseEntity.ok().body(service.read(data));
     }

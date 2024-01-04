@@ -42,7 +42,7 @@ public class SaborController {
         return ResponseEntity.ok().body(service.readAll());
     }
 
-    @GetMapping("/findById")
+    @PostMapping("/findById")
     public ResponseEntity<?> findById(@RequestBody @Validated SaborIDDTO data) throws SQLException {
         return ResponseEntity.ok().body(service.read(data));
     }

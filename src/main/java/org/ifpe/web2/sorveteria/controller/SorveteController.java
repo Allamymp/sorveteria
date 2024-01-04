@@ -56,12 +56,12 @@ public class SorveteController {
     public ResponseEntity<?> findAll() throws SQLException {
         return ResponseEntity.ok().body(service.readAll());
     }
-    @GetMapping("/findById")
+    @PostMapping("/findById")
     public ResponseEntity<?> findById(@RequestBody@Validated SorveteIDDTO data) throws SQLException {
         return ResponseEntity.ok().body(service.read(data));
     }
-    @GetMapping("/report")
-    public ResponseEntity<?> report(@RequestBody @Validated ReportRequestDTO data) throws SQLException {
-        return ResponseEntity.ok().body(service.readAllByDate(data.date()));
+    @PostMapping("/report")
+    public ResponseEntity<?> report(@RequestBody@Validated ReportRequestDTO id) throws SQLException {
+        return ResponseEntity.ok().body(service.readAllByDate(id.date()));
     }
 }
