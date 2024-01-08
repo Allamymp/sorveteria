@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Sabor por ID</title>
+</head>
+<body>
+
+<h1>Buscar Sabor por ID</h1>
+
+<form id="buscarSaborForm">
+  <label for="saborId">ID do Sabor:</label>
+  <input type="number" id="saborId" required>
+  <button type="button" onclick="buscarSabor()">Buscar</button>
+</form>
+
+<div id="saborEncontradoContainer"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/sabor';
+
+  // Função para buscar um sabor por ID
+  const buscarSabor = async () => {
+    const saborId = document.getElementById('saborId').value;
+
+    if (!saborId) {
+      alert('Por favor, insira um ID de sabor válido.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseURL}/findById`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: parseInt(saborId) }),
+      });
+      const saborEncontrado = await response.json();
+
+      // Chamando a função para exibir o sabor encontrado ou a mensagem
+      exibirSaborEncontrado(saborEncontrado);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para exibir o sabor encontrado ou a mensagem de ID não encontrado
+  const exibirSaborEncontrado = (sabor) => {
+    const saborEncontradoContainer = document.getElementById('saborEncontradoContainer');
+    saborEncontradoContainer.innerHTML = '';
+
+    if (sabor && sabor.id !== undefined) {
+      const saborElement = criarElementoSabor(sabor);
+      saborEncontradoContainer.appendChild(saborElement);
+    } else {
+      const mensagemElement = document.createElement('p');
+      mensagemElement.textContent = 'ID não encontrado.';
+      saborEncontradoContainer.appendChild(mensagemElement);
+    }
+  };
+
+  // Função para criar um elemento HTML para um sabor
+  const criarElementoSabor = (sabor) => {
+    const saborElement = document.createElement('div');
+    saborElement.innerHTML = `
+      <h3>Nome: ${sabor.nome}</h3>
+      <p>ID: ${sabor.id}</p>
+      <p>Descricao: ${sabor.descricao}</p>
+      <hr>
+    `;
+    return saborElement;
+  };
+</script>
+
+</body>
+</html>

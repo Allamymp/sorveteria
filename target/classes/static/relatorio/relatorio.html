@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório de Sorvetes por Data</title>
+</head>
+<body>
+
+<style>
+  /* Remova os marcadores de lista */
+  ul {
+    list-style-type: none;
+  }
+</style>
+
+<h1>Relatório de Sorvetes por Data</h1>
+
+<form id="reportForm">
+  <label for="reportDate">Data do Relatório:</label>
+  <input type="date" id="reportDate" required>
+  <button type="button" onclick="gerarRelatorio()">Gerar Relatório</button>
+</form>
+
+<div id="relatorioContainer"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/sorvete/report';
+
+  // Função para gerar o relatório por data
+  const gerarRelatorio = async () => {
+    const reportDate = document.getElementById('reportDate').value;
+
+    if (!reportDate) {
+      alert('Por favor, selecione uma data.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseURL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ date: reportDate }),
+      });
+
+      const relatorio = await response.json();
+
+      // Chama a função para exibir o relatório na página
+      exibirRelatorio(relatorio);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para exibir o relatório na página
+  const exibirRelatorio = (relatorio) => {
+    const relatorioContainer = document.getElementById('relatorioContainer');
+    relatorioContainer.innerHTML = '';
+
+    if (relatorio.length === 0) {
+      const mensagemElement = document.createElement('p');
+      mensagemElement.textContent = 'Nenhum sorvete encontrado para a data selecionada.';
+      relatorioContainer.appendChild(mensagemElement);
+    } else {
+      relatorio.forEach(sorvete => {
+        const sorveteElement = document.createElement('div');
+        sorveteElement.innerHTML = `
+          <p>ID: ${sorvete.id}</p>
+          <p>Data de Compra: ${sorvete.dataCompra}</p>
+          <p>Tipo de Sorvete:</p>
+          <ul>
+            <li>ID: ${sorvete.tipoSorvete.id}</li>
+            <li>Tipo: ${sorvete.tipoSorvete.tipo}</li>
+            <li>Quantidade de Bolas: ${sorvete.tipoSorvete.quantBolas}</li>
+            <li>Peso: ${sorvete.tipoSorvete.peso}</li>
+            <li>Descrição: ${sorvete.tipoSorvete.descricao}</li>
+            <li>Valor: ${sorvete.tipoSorvete.valor}</li>
+          </ul>
+          <p>Sabores:</p>
+          <ul>
+            ${sorvete.sabores.map(sabor => `<li><br>ID: ${sabor.id}<br> Nome: ${sabor.nome}<br> Descrição: ${sabor.descricao}</li>`).join('')}
+          </ul>
+          <hr>
+        `;
+        relatorioContainer.appendChild(sorveteElement);
+      });
+    }
+  };
+</script>
+
+</body>
+</html>

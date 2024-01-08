@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atualizar Sabor</title>
+</head>
+<body>
+
+<h1>Atualizar Sabor</h1>
+
+<form id="atualizarSaborForm">
+  <label for="saborId">ID do Sabor:</label>
+  <input type="number" id="saborId" required>
+  <br>
+  <label for="novoNome">Novo Nome:</label>
+  <input type="text" id="novoNome" required>
+  <br>
+  <label for="novaDescricao">Nova Descrição:</label>
+  <textarea id="novaDescricao" rows="4" required></textarea>
+  <br>
+  <button type="button" onclick="atualizarSabor()">Atualizar</button>
+</form>
+
+<div id="atualizacaoStatus"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/sabor';
+
+  // Função para atualizar um sabor por ID
+  const atualizarSabor = async () => {
+    const saborId = document.getElementById('saborId').value;
+    const novoNome = document.getElementById('novoNome').value;
+    const novaDescricao = document.getElementById('novaDescricao').value;
+
+    if (!saborId || !novoNome || !novaDescricao) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseURL}/update`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: parseInt(saborId),
+          nome: novoNome,
+          descricao: novaDescricao
+        }),
+      });
+
+      if (response.ok) {
+        exibirMensagemStatus('Sabor atualizado com sucesso.');
+      } else {
+        exibirMensagemStatus('Erro ao atualizar o sabor.');
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para exibir o status da atualização na página
+  const exibirMensagemStatus = (mensagem) => {
+    const statusContainer = document.getElementById('atualizacaoStatus');
+    statusContainer.textContent = mensagem;
+  };
+</script>
+
+</body>
+</html>

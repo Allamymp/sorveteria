@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encontrar Sorvete por ID</title>
+</head>
+<body>
+
+<h1>Encontrar Sorvete por ID</h1>
+
+<form id="buscarSorveteForm">
+  <label for="sorveteId">ID do Sorvete:</label>
+  <input type="number" id="sorveteId" required>
+  <button type="button" onclick="buscarSorvete()">Buscar</button>
+</form>
+
+<div id="resultadoBusca"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/sorvete';
+
+  // Função para buscar um sorvete por ID
+  const buscarSorvete = async () => {
+    const sorveteId = document.getElementById('sorveteId').value;
+
+    if (!sorveteId) {
+      alert('Por favor, insira um ID de sorvete válido.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseURL}/findById`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: parseInt(sorveteId) }),
+      });
+
+      if (response.ok) {
+        const sorvete = await response.json();
+        exibirResultadoBusca(sorvete);
+      } else {
+        exibirResultadoBusca('Sorvete não encontrado. Verifique o ID fornecido.');
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para exibir o resultado da busca na página
+  const exibirResultadoBusca = (resultado) => {
+    const resultadoBusca = document.getElementById('resultadoBusca');
+    resultadoBusca.innerHTML = '';
+
+    if (typeof resultado === 'string') {
+      const mensagemElement = document.createElement('p');
+      mensagemElement.textContent = resultado;
+      resultadoBusca.appendChild(mensagemElement);
+    } else {
+      const sorveteElement = document.createElement('div');
+      sorveteElement.innerHTML = `
+        <p>ID: ${resultado.id}</p>
+        <p>Data de Compra: ${resultado.dataCompra}</p>
+        <p>Tipo de Sorvete:</p>
+        <ul>
+          <li>ID: ${resultado.tipoSorvete.id}</li>
+          <li>Tipo: ${resultado.tipoSorvete.tipo}</li>
+          <li>Quantidade de Bolas: ${resultado.tipoSorvete.quantBolas}</li>
+          <li>Peso: ${resultado.tipoSorvete.peso}</li>
+          <li>Descrição: ${resultado.tipoSorvete.descricao}</li>
+          <li>Valor: ${resultado.tipoSorvete.valor}</li>
+        </ul>
+        <p>Sabores:</p>
+        <ul>
+          ${resultado.sabores.map(sabor => `<li><br>ID: ${sabor.id}<br> Nome: ${sabor.nome}<br> Descrição: ${sabor.descricao}</li>`).join('')}
+        </ul>
+        <hr>
+      `;
+      resultadoBusca.appendChild(sorveteElement);
+    }
+  };
+</script>
+
+</body>
+</html>
+]

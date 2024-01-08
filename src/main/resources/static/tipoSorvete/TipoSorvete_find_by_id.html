@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Tipo de Sorvete por ID</title>
+</head>
+<body>
+
+<h1>Buscar Tipo de Sorvete por ID</h1>
+
+<form id="buscarTipoSorveteForm">
+  <label for="tipoSorveteId">ID do Tipo de Sorvete:</label>
+  <input type="number" id="tipoSorveteId" required>
+  <button type="button" onclick="buscarTipoSorvete()">Buscar</button>
+</form>
+
+<div id="tipoSorveteEncontradoContainer"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/tipoSorvete';
+
+  // Função para buscar um tipo de sorvete por ID
+  const buscarTipoSorvete = async () => {
+    const tipoSorveteId = document.getElementById('tipoSorveteId').value;
+
+    if (!tipoSorveteId) {
+      alert('Por favor, insira um ID de tipo de sorvete válido.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseURL}/findById`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: parseInt(tipoSorveteId) }),
+      });
+      const tipoSorveteEncontrado = await response.json();
+
+      // Chamando a função para exibir o tipo de sorvete encontrado ou a mensagem
+      exibirTipoSorveteEncontrado(tipoSorveteEncontrado);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para exibir o tipo de sorvete encontrado na página
+  const exibirTipoSorveteEncontrado = (tipoSorvete) => {
+    const tipoSorveteEncontradoContainer = document.getElementById('tipoSorveteEncontradoContainer');
+    tipoSorveteEncontradoContainer.innerHTML = '';
+
+    if (tipoSorvete && tipoSorvete.id !== undefined) {
+      const tipoSorveteElement = criarElementoTipoSorvete(tipoSorvete);
+      tipoSorveteEncontradoContainer.appendChild(tipoSorveteElement);
+    } else {
+      const mensagemElement = document.createElement('p');
+      mensagemElement.textContent = 'ID não encontrado.';
+      tipoSorveteEncontradoContainer.appendChild(mensagemElement);
+    }
+  };
+
+  // Função para criar um elemento HTML para um tipo de sorvete
+  const criarElementoTipoSorvete = (tipoSorvete) => {
+    const tipoSorveteElement = document.createElement('div');
+    tipoSorveteElement.innerHTML = `
+      <h3>Tipo: ${tipoSorvete.tipo}</h3>
+      <p>ID: ${tipoSorvete.id}</p>
+      <p>Quantidade de Bolas: ${tipoSorvete.quantBolas}</p>
+      <p>Peso: ${tipoSorvete.peso}</p>
+      <p>Descrição: ${tipoSorvete.descricao}</p>
+      <p>Valor: ${tipoSorvete.valor}</p>
+      <hr>
+    `;
+    return tipoSorveteElement;
+  };
+</script>
+
+</body>
+</html>

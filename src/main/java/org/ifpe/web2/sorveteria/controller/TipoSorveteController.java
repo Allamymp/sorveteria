@@ -32,12 +32,12 @@ public class TipoSorveteController {
         return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins = "*", methods = {RequestMethod.DELETE})
     @DeleteMapping
     public ResponseEntity<?> delete(@RequestBody @Validated TipoSorveteIDDTO data) throws SQLException {
         service.delete(data);
         return ResponseEntity.ok().build();
     }
-
     @GetMapping("/all")
     public ResponseEntity<?> listAll() throws SQLException {
         return ResponseEntity.ok().body(service.readAll());

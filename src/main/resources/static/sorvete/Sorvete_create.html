@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Sorvete</title>
+</head>
+<body>
+
+<h1>Criar Sorvete</h1>
+
+<form id="criarSorveteForm">
+  <label for="tipoSorveteId">ID do Tipo de Sorvete:</label>
+  <input type="number" id="tipoSorveteId" required>
+  <br>
+  <label for="saborListId">IDs dos Sabores (separados por vírgula):</label>
+  <input type="text" id="saborListId" required>
+  <br>
+  <button type="button" onclick="criarSorvete()">Criar</button>
+</form>
+
+<div id="criacaoSorveteMensagem"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/sorvete';
+
+  // Função para criar um sorvete
+  const criarSorvete = async () => {
+    const tipoSorveteId = document.getElementById('tipoSorveteId').value;
+    const saborListId = document.getElementById('saborListId').value.split(',').map(Number);
+
+    if (!tipoSorveteId || !saborListId) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseURL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tipoSorveteId: parseInt(tipoSorveteId),
+          saborListId,
+        }),
+      });
+
+      if (response.ok) {
+        exibirMensagemCriacao('Sorvete criado com sucesso.');
+      } else {
+        exibirMensagemCriacao('Erro ao criar o sorvete.');
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para exibir a mensagem de criação na página
+  const exibirMensagemCriacao = (mensagem) => {
+    const criacaoSorveteMensagem = document.getElementById('criacaoSorveteMensagem');
+    criacaoSorveteMensagem.textContent = mensagem;
+  };
+</script>
+
+</body>
+</html>

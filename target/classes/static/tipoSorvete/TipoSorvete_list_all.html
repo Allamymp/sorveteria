@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tipos de Sorvete</title>
+</head>
+<body>
+
+<h1>Lista de Tipos de Sorvete</h1>
+
+<div id="tiposSorveteContainer"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/tipoSorvete';
+
+  // Função para listar todos os tipos de sorvete
+  const listAllTiposSorvete = async () => {
+    try {
+      const response = await fetch(`${baseURL}/all`);
+      const tiposSorvete = await response.json();
+
+      // Chamando a função para renderizar a lista de tipos de sorvete
+      renderizarTiposSorvete(tiposSorvete);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para renderizar a lista de tipos de sorvete na página
+  const renderizarTiposSorvete = (tiposSorvete) => {
+    const tiposSorveteContainer = document.getElementById('tiposSorveteContainer');
+
+    if (tiposSorvete.length > 0) {
+      tiposSorvete.forEach((tipoSorvete) => {
+        const tipoSorveteElement = criarElementoTipoSorvete(tipoSorvete);
+        tiposSorveteContainer.appendChild(tipoSorveteElement);
+      });
+    } else {
+      const mensagemElement = document.createElement('p');
+      mensagemElement.textContent = 'Nenhum tipo de sorvete disponível.';
+      tiposSorveteContainer.appendChild(mensagemElement);
+    }
+  };
+
+  // Função para criar um elemento HTML para um tipo de sorvete
+  const criarElementoTipoSorvete = (tipoSorvete) => {
+    const tipoSorveteElement = document.createElement('div');
+    tipoSorveteElement.innerHTML = `
+      <h3>Tipo: ${tipoSorvete.tipo}</h3>
+      <p>ID: ${tipoSorvete.id}</p>
+      <p>Quantidade de Bolas: ${tipoSorvete.quantBolas}</p>
+      <p>Peso: ${tipoSorvete.peso} g</p>
+      <p>Descrição: ${tipoSorvete.descricao}</p>
+      <p>Valor: R$ ${tipoSorvete.valor.toFixed(2)}</p>
+      <hr>
+    `;
+    return tipoSorveteElement;
+  };
+
+  // Chamando a função para listar todos os tipos de sorvete
+  listAllTiposSorvete();
+</script>
+
+</body>
+</html>

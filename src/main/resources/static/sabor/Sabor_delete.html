@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excluir Sabor por ID</title>
+</head>
+<body>
+
+<h1>Excluir Sabor por ID</h1>
+
+<form id="excluirSaborForm">
+  <label for="saborId">ID do Sabor:</label>
+  <input type="number" id="saborId" required>
+  <button type="button" onclick="excluirSabor()">Excluir</button>
+</form>
+
+<div id="exclusaoMensagemContainer"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/sabor';
+
+  // Função para excluir um sabor por ID
+  const excluirSabor = async () => {
+    const saborId = document.getElementById('saborId').value;
+
+    if (!saborId) {
+      alert('Por favor, insira um ID de sabor válido.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseURL}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: parseInt(saborId) }),
+      });
+
+      // Adicionando log para verificar a resposta do servidor
+      console.log('Resposta do servidor:', response);
+
+      if (response.ok) {
+        exibirMensagemExclusao('Sabor excluído com sucesso.');
+      } else {
+        exibirMensagemExclusao('Falha ao excluir o sabor. Verifique o ID.');
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para exibir a mensagem de exclusão na página
+  const exibirMensagemExclusao = (mensagem) => {
+    const exclusaoMensagemContainer = document.getElementById('exclusaoMensagemContainer');
+    exclusaoMensagemContainer.innerHTML = '';
+
+    const mensagemElement = document.createElement('p');
+    mensagemElement.textContent = mensagem;
+    exclusaoMensagemContainer.appendChild(mensagemElement);
+  };
+</script>
+
+</body>
+</html>

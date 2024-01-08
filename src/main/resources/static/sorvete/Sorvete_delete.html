@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excluir Sorvete por ID</title>
+</head>
+<body>
+
+<h1>Excluir Sorvete por ID</h1>
+
+<form id="excluirSorveteForm">
+  <label for="sorveteId">ID do Sorvete:</label>
+  <input type="number" id="sorveteId" required>
+  <button type="button" onclick="excluirSorvete()">Excluir</button>
+</form>
+
+<div id="exclusaoSorveteMensagem"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/sorvete';
+
+  // Função para excluir um sorvete por ID
+  const excluirSorvete = async () => {
+    const sorveteId = document.getElementById('sorveteId').value;
+
+    if (!sorveteId) {
+      alert('Por favor, insira um ID de sorvete válido.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseURL}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: parseInt(sorveteId) }),
+      });
+
+      if (response.ok) {
+        exibirMensagemExclusao('Sorvete excluído com sucesso.');
+      } else {
+        exibirMensagemExclusao('Erro ao excluir o sorvete. Verifique o ID fornecido.');
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para exibir a mensagem de exclusão na página
+  const exibirMensagemExclusao = (mensagem) => {
+    const exclusaoSorveteMensagem = document.getElementById('exclusaoSorveteMensagem');
+    exclusaoSorveteMensagem.textContent = mensagem;
+  };
+</script>
+
+</body>
+</html>

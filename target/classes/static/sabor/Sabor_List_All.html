@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Sabores</title>
+</head>
+<body>
+
+<h1>Lista de Sabores</h1>
+
+<div id="saboresContainer"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/sabor';
+
+  // Função para listar todos os sabores
+  const listAllSabores = async () => {
+    try {
+      const response = await fetch(`${baseURL}/all`);
+      const sabores = await response.json();
+
+      // Chamando a função para renderizar a lista de sabores
+      renderizarSabores(sabores);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para renderizar a lista de sabores na página
+  const renderizarSabores = (sabores) => {
+    const saboresContainer = document.getElementById('saboresContainer');
+
+    if (sabores.length > 0) {
+      sabores.forEach((sabor) => {
+        const saborElement = criarElementoSabor(sabor);
+        saboresContainer.appendChild(saborElement);
+      });
+    } else {
+      const mensagemElement = document.createElement('p');
+      mensagemElement.textContent = 'Nenhum sabor disponível.';
+      saboresContainer.appendChild(mensagemElement);
+    }
+  };
+
+  // Função para criar um elemento HTML para um sabor
+  const criarElementoSabor = (sabor) => {
+    const saborElement = document.createElement('div');
+    saborElement.innerHTML = `
+      <h3>Nome: ${sabor.nome}</h3>
+      <p>ID: ${sabor.id}</p>
+      <p>${sabor.descricao}</p>
+      <hr>
+    `;
+    return saborElement;
+  };
+
+  // Chamando a função para listar todos os sabores
+  listAllSabores();
+</script>
+
+</body>
+</html>

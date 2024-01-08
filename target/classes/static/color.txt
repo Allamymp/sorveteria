@@ -1,0 +1,12 @@
+    Background (Fundo): #282a36
+    Current Line (Linha Atual): #44475a
+    Selection (Seleção): #44475a
+    Foreground (Primeiro Plano): #f8f8f2
+    Comment (Comentário): #6272a4
+    Cyan (Ciano): #8be9fd
+    Green (Verde): #50fa7b
+    Orange (Laranja): #ffb86c
+    Pink (Rosa): #ff79c6
+    Purple (Roxo): #bd93f9
+    Red (Vermelho): #ff5555
+    Yellow (Amarelo): #f1fa8c

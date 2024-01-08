@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Novo Sabor</title>
+</head>
+<body>
+
+<h1>Criar Novo Sabor</h1>
+
+<form id="criarSaborForm">
+  <label for="nome">Nome:</label>
+  <input type="text" id="nome" required>
+  <br>
+  <label for="descricao">Descrição:</label>
+  <textarea id="descricao" required></textarea>
+  <br>
+  <button type="button" onclick="criarSabor()">Criar</button>
+  <p id="mensagem"></p>
+</form>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/sabor';
+
+  // Função para criar um novo sabor
+  const criarSabor = async () => {
+    const nome = document.getElementById('nome').value;
+    const descricao = document.getElementById('descricao').value;
+
+    if (!nome || !descricao) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    try {
+      const response = await fetch(baseURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nome, descricao }),
+      });
+
+      if (response.ok) {
+        const mensagemElement = document.getElementById('mensagem');
+        mensagemElement.textContent = 'Novo sabor criado com sucesso!';
+        // Limpar os campos após a criação bem-sucedida, se necessário
+        document.getElementById('nome').value = '';
+        document.getElementById('descricao').value = '';
+      } else {
+        alert('Erro ao criar o novo sabor.');
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+</script>
+
+</body>
+</html>

@@ -71,9 +71,8 @@ public class SaborRepository implements Repository<Sabor> {
 
     @Override
     public void delete(int codigo) throws SQLException {
-        String sql = "DELETE FROM tb_sabor WHERE id = ?";
-        String deleteSaborSql = "DELETE FROM tb_sorvete_sabor WHERE sorvete_id = ?";
-
+        String deleteSaborSql = "DELETE FROM tb_sorvete_sabor WHERE sabor_id = ?";
+        String deleteSorveteSql = "DELETE FROM tb_sabor WHERE id = ?";
 
         try (Connection conn = ConnectionManager.getNewConnection()) {
             // Excluir registros da tabela de relacionamento
@@ -81,10 +80,11 @@ public class SaborRepository implements Repository<Sabor> {
                 deleteSaborStatement.setInt(1, codigo);
                 deleteSaborStatement.executeUpdate();
             }
-            try (PreparedStatement statement = conn.prepareStatement(sql)) {
 
-                statement.setInt(1, codigo);
-                int rowsDeleted = statement.executeUpdate();
+            // Excluir o sabor
+            try (PreparedStatement deleteSorveteStatement = conn.prepareStatement(deleteSorveteSql)) {
+                deleteSorveteStatement.setInt(1, codigo);
+                int rowsDeleted = deleteSorveteStatement.executeUpdate();
 
                 if (rowsDeleted == 0) {
                     throw new SQLException("Nenhum registro excluído. ID não encontrado: " + codigo);
@@ -92,6 +92,7 @@ public class SaborRepository implements Repository<Sabor> {
             }
         }
     }
+
 
     @Override
     public List<Sabor> readAll() throws SQLException {

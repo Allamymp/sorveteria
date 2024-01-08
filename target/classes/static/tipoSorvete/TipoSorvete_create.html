@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Tipo de Sorvete</title>
+</head>
+<body>
+
+<h1>Criar Tipo de Sorvete</h1>
+
+<form id="criarTipoSorveteForm">
+  <label for="tipo">Tipo:</label>
+  <input type="text" id="tipo" required>
+  <br>
+  <label for="quantBolas">Quantidade de Bolas:</label>
+  <input type="number" id="quantBolas" required>
+  <br>
+  <label for="peso">Peso:</label>
+  <input type="number" id="peso" required>
+  <br>
+  <label for="descricao">Descrição:</label>
+  <textarea id="descricao" rows="4" required></textarea>
+  <br>
+  <label for="valor">Valor:</label>
+  <input type="number" id="valor" required>
+  <br>
+  <button type="button" onclick="criarTipoSorvete()">Criar</button>
+</form>
+
+<div id="criacaoStatus"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/tipoSorvete';
+
+  // Função para criar um tipo de sorvete
+  const criarTipoSorvete = async () => {
+    const tipo = document.getElementById('tipo').value;
+    const quantBolas = document.getElementById('quantBolas').value;
+    const peso = document.getElementById('peso').value;
+    const descricao = document.getElementById('descricao').value;
+    const valor = document.getElementById('valor').value;
+
+    if (!tipo || !quantBolas || !peso || !descricao || !valor) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseURL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tipo: tipo,
+          quantBolas: parseInt(quantBolas),
+          peso: parseFloat(peso),
+          descricao: descricao,
+          valor: parseFloat(valor)
+        }),
+      });
+
+      if (response.ok) {
+        exibirMensagemStatus('Tipo de Sorvete criado com sucesso.');
+      } else {
+        exibirMensagemStatus('Erro ao criar Tipo de Sorvete.');
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para exibir o status da criação na página
+  const exibirMensagemStatus = (mensagem) => {
+    const statusContainer = document.getElementById('criacaoStatus');
+    statusContainer.textContent = mensagem;
+  };
+</script>
+
+</body>
+</html>

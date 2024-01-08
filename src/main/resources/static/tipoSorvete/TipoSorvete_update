@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atualizar Tipo de Sorvete</title>
+</head>
+<body>
+
+<h1>Atualizar Tipo de Sorvete</h1>
+
+<form id="atualizarTipoSorveteForm">
+  <label for="tipoSorveteId">ID do Tipo de Sorvete:</label>
+  <input type="number" id="tipoSorveteId" required>
+  <br>
+  <label for="novoTipo">Novo Tipo:</label>
+  <input type="text" id="novoTipo" required>
+  <br>
+  <label for="novaQuantBolas">Nova Quantidade de Bolas:</label>
+  <input type="number" id="novaQuantBolas" required>
+  <br>
+  <label for="novoPeso">Novo Peso:</label>
+  <input type="number" id="novoPeso" step="0.01" required>
+  <br>
+  <label for="novaDescricao">Nova Descrição:</label>
+  <textarea id="novaDescricao" rows="4" required></textarea>
+  <br>
+  <label for="novoValor">Novo Valor:</label>
+  <input type="number" id="novoValor" step="0.01" required>
+  <br>
+  <button type="button" onclick="atualizarTipoSorvete()">Atualizar</button>
+</form>
+
+<div id="atualizacaoTipoSorveteStatus"></div>
+
+<script>
+  // URL base para as requisições
+  const baseURL = 'http://localhost:8080/tipoSorvete';
+
+  // Função para atualizar um tipo de sorvete por ID
+  const atualizarTipoSorvete = async () => {
+    const tipoSorveteId = document.getElementById('tipoSorveteId').value;
+    const novoTipo = document.getElementById('novoTipo').value;
+    const novaQuantBolas = document.getElementById('novaQuantBolas').value;
+    const novoPeso = document.getElementById('novoPeso').value;
+    const novaDescricao = document.getElementById('novaDescricao').value;
+    const novoValor = document.getElementById('novoValor').value;
+
+    if (!tipoSorveteId || !novoTipo || !novaQuantBolas || !novoPeso || !novaDescricao || !novoValor) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${baseURL}/update`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: parseInt(tipoSorveteId),
+          tipo: novoTipo,
+          quantBolas: parseInt(novaQuantBolas),
+          peso: parseFloat(novoPeso),
+          descricao: novaDescricao,
+          valor: parseFloat(novoValor),
+        }),
+      });
+
+      if (response.ok) {
+        exibirMensagemStatus('Tipo de Sorvete atualizado com sucesso.');
+      } else {
+        exibirMensagemStatus('Erro ao atualizar o Tipo de Sorvete.');
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // Função para exibir o status da atualização na página
+  const exibirMensagemStatus = (mensagem) => {
+    const statusContainer = document.getElementById('atualizacaoTipoSorveteStatus');
+    statusContainer.textContent = mensagem;
+  };
+</script>
+
+</body>
+</html>
